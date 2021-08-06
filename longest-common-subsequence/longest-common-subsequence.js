@@ -4,8 +4,6 @@
  * @return {number}
  */
 var longestCommonSubsequence = function(A, B) {
-    // const memo = new Array(A.length + 1).fill(
-    //              new Array(B.length + 1).fill(null))
     const memo = new Array(A.length + 1).fill(0).map(() => new Array(B.length + 1).fill(null));
     
     return longestCommonSubsequenceHelper(A, B, memo);
