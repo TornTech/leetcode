@@ -22,6 +22,7 @@ var shortestPathBinaryMatrix = function(grid) {
     if (grid[n-1][n-1] === 1) return -1;
     
     let visited = new Array(n).fill(false).map(() => new Array(n).fill(false));
+    const possibleDirections = [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, 1], [-1, -1], [1, 1], [1, -1]];
     let steps = 1;
 
     while (queue.length) {
@@ -37,63 +38,15 @@ var shortestPathBinaryMatrix = function(grid) {
             return currentSteps;
         } 
     
-        else if (islandMarker(grid, currentPosition) === 0) {
-
-            let up        = new Position(x, y - 1);
-            let right     = new Position(x + 1, y);
-            let down      = new Position(x, y + 1);
-            let left      = new Position(x - 1, y);
-            let upLeft    = new Position(x - 1, y - 1);
-            let upRight   = new Position(x + 1, y - 1);
-            let downLeft  = new Position(x - 1, y + 1);
-            let downRight = new Position(x + 1, y + 1);
-
-            // Check up
-            if (y > 0 && !visited[y-1][x]) {
-                queue.push({pos: up, steps: currentSteps + 1})
-                visited[y-1][x] = true;
-            }
-
-            // Check right
-            if (x < n - 1 && !visited[y][x+1]) {
-                queue.push({pos: right, steps: currentSteps + 1})
-                visited[y][x+1] = true;
-            }
-
-            // Check down
-            if (y < n - 1 && !visited[y+1][x]) {
-                queue.push({pos: down, steps: currentSteps + 1})
-                visited[y+1][x] = true;
-            }
-
-            // Check left
-            if (x > 0 && !visited[y][x-1]) {
-                queue.push({pos: left, steps: currentSteps + 1})
-                visited[y][x-1] = true;
-            }
-            
-            // Check upLeft
-            if (y > 0  && x > 0 && !visited[y-1][x-1]) {
-                queue.push({pos: upLeft, steps: currentSteps + 1})
-                visited[y-1][x-1] = true;
-            }
-            
-            // check upRight
-            if (y > 0  && x < n - 1 && !visited[y-1][x+1]) {
-                queue.push({pos: upRight, steps: currentSteps + 1})
-                visited[y-1][x+1] = true;
-            }
-            
-            // check downleft
-            if (y < n - 1  && x > 0 && !visited[y+1][x-1]) {
-                queue.push({pos: downLeft, steps: currentSteps + 1})
-                visited[y+1][x-1] = true;
-            }
-            
-            // check downRight
-            if (y < n - 1  && x < n - 1 && !visited[y+1][x+1]) {
-                queue.push({pos: downRight, steps: currentSteps + 1})
-                visited[y+1][x+1] = true;
+        else if (grid[y][x] === 0) {
+            for (const [dx, dy] of possibleDirections) {
+                let newX = dx + x;
+                let newY = dy + y;
+                
+                if (isWithinBounds(grid, newX, newY) && visited[newY][newX] === false) {
+                    queue.push({pos: new Position(newX, newY), steps: currentSteps + 1});
+                    visited[newY][newX] = true;
+                }
             }
         }
     }
@@ -101,6 +54,6 @@ var shortestPathBinaryMatrix = function(grid) {
     return -1;
 };
 
-function islandMarker(map, position) {
-  return map[position.y][position.x];
+function isWithinBounds(grid, x, y) {
+    return x >= 0 && x < grid.length && y >= 0 && y < grid.length;
 }
