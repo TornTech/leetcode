@@ -10,12 +10,10 @@ var addOperators = function(num, target) {
     
     function operationCalculator(string, operatorsSoFar, sumSoFar, previous) {      
         if (sumSoFar === target && !string.length) {
-            const result = operatorsSoFar.join('');
-            if (result.length >= num.length) {
-                output.push(result);
-                return;
-            }
+            output.push(operatorsSoFar.join(''));
+            return;
         }
+        
         const len = string[0] === '0' ? 1 : string.length;
         
         for (let i = 1; i <= len; i++) {
