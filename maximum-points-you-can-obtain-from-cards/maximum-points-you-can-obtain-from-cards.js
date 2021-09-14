@@ -4,19 +4,20 @@
  * @return {number}
  */
 var maxScore = function(cardPoints, k) {
-    const leftArray = cardPoints.slice(0, k);
-    const rightArray = cardPoints.slice(cardPoints.length - k);
-    const combinedArray = [...leftArray.reverse(), ...rightArray.reverse()];
+    let currSum = 0;
+    for (let i = 0; i < k; i++) {
+        currSum += cardPoints[i]
+    }
     
-    let currSum = combinedArray.slice(0, k).reduce((acc, num) => acc + num, 0);
     let maxSum = currSum;
-
-    for (let i = 1; i <= combinedArray.length - k; i++) {
-        currSum -= combinedArray[i-1];
-        currSum += combinedArray[i + k - 1];
+    
+    let leftNum = k - 1;
+    for (let rightNum = cardPoints.length - 1; rightNum >= cardPoints.length - k; rightNum--) {
+        currSum -= cardPoints[leftNum];
+        currSum += cardPoints[rightNum];
         maxSum = Math.max(maxSum, currSum);
+        leftNum--;
     }
     
     return maxSum;
 };
-
