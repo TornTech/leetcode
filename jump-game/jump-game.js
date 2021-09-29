@@ -3,25 +3,19 @@
  * @return {boolean}
  */
 var canJump = function(nums) {
-    const memo = new Array(nums.length).fill(null);
+    const memo = new Array(nums.length).fill(false);
+    memo[0] = true;
     
-    return canJumpHelper(nums, 0, memo);   
-}
-
-var canJumpHelper = function(nums, index, memo) {
-    if (index === nums.length - 1) return true;
-    if (index >= nums.length) return false;
-    if (memo[index] !== null) return memo[index];
-    
-    const currentNum = nums[index];
-    
-    if (!currentNum) return false;
-    
-    for (let i = 1; i <= currentNum; i++) {
-        memo[index+i] = canJumpHelper(nums, index + i, memo);
-        
-        if (memo[index+i]) return true;
+    for (let i = 0;  i < nums.length; i++) {
+        const currentNum = nums[i];
+        if (memo[i]) {
+            for (let j = 0; j <= currentNum; j++) {
+                const newIndex = i + j
+                if (i + j < nums.length) {
+                    memo[i + j] = true;
+                }
+            }
+        }
     }
-    
-    return false;
+    return memo[nums.length - 1];
 }
