@@ -17,11 +17,11 @@ class Solution:
         first_digit  = s[index]
         second_digit = s[index+1]
         
-        if first_digit == "0":
-            mem[index] = self.numDecodingsHelper(s, index + 2, mem)
-            return mem[index]
-        elif int(first_digit + second_digit) <= 26:
+        if int(first_digit + second_digit) <= 26:
             mem[index] = self.numDecodingsHelper(s, index + 1, mem)  + self.numDecodingsHelper(s, index + 2, mem)
+            return mem[index]
+        elif first_digit == "0":
+            mem[index] = self.numDecodingsHelper(s, index + 2, mem)
             return mem[index]
         else:
             mem[index] = self.numDecodingsHelper(s, index + 1, mem)
